@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menuHome"
+        android:icon="@drawable/home"
+        android:title="Acasa"/>
+
+    <item android:id="@+id/menuProfesori"
+        android:icon="@drawable/user"
+        android:title="Profesori"/>
+
+    <item android:id="@+id/menuDiscipline"
+        android:icon="@drawable/book"
+        android:title="Discipline"/>
+
+    <item android:id="@+id/menuTeme"
+        android:icon="@drawable/homework"
+        android:title="Teme"/>
+
+    <item android:id="@+id/menuNote"
+        android:icon="@drawable/grade"
+        android:title="Note"/>
+
+    <item android:id="@+id/menuOrar"
+        android:icon="@drawable/schedule"
+        android:title="Orar"/>
+</menu>

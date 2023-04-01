@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/menuHome">
+    <fragment
+        android:id="@+id/menuHome"
+        android:name="com.example.uvtorganiser.HomeFragment"
+        android:label="Acasa"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/menuProfesori"
+        android:name="com.example.uvtorganiser.ProfesoriFragment"
+        android:label="Profesori"
+        tools:layout="@layout/fragment_profesori" />
+    <fragment
+        android:id="@+id/menuDiscipline"
+        android:name="com.example.uvtorganiser.DisciplineFragment"
+        android:label="Discipline"
+        tools:layout="@layout/fragment_discipline" />
+    <fragment
+        android:id="@+id/menuTeme"
+        android:name="com.example.uvtorganiser.TemeFragment"
+        android:label="Teme"
+        tools:layout="@layout/fragment_teme" />
+    <fragment
+        android:id="@+id/menuNote"
+        android:name="com.example.uvtorganiser.NoteFragment"
+        android:label="Note"
+        tools:layout="@layout/fragment_note" />
+    <fragment
+        android:id="@+id/menuOrar"
+        android:name="com.example.uvtorganiser.OrarFragment"
+        android:label="Orar"
+        tools:layout="@layout/fragment_orar" />
+</navigation>
