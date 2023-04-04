@@ -1,64 +1,62 @@
 package com.example.uvtorganiser;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfesoriFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+
 public class ProfesoriFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ProfesoriFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfesoriFragment newInstance(String param1, String param2) {
-        ProfesoriFragment fragment = new ProfesoriFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    RecyclerView recyclerView;
+    FloatingActionButton add_profi;
+    DatabaseHelper db;
+    ArrayList<String>numeProf, mailProf, telefonProf;
+    CustomAdapterProf customAdapterProf;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profesori, container, false);
+        View view = inflater.inflate(R.layout.fragment_profesori, container, false);
+        recyclerView = view.findViewById(R.id.reciclerView);
+        add_profi = view.findViewById(R.id.addProfesor);
+        add_profi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_menuProfesori_to_addProfi);
+            }
+        });
+        db = new DatabaseHelper(ProfesoriFragment.super.getContext());
+        numeProf = new ArrayList<>();
+        mailProf = new ArrayList<>();
+        telefonProf = new ArrayList<>();
+        storeDataIntoArrays();
+        customAdapterProf = new CustomAdapterProf(ProfesoriFragment.super.getContext(), numeProf, mailProf, telefonProf);
+        recyclerView.setAdapter(customAdapterProf);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ProfesoriFragment.super.getContext()));
+        return view;
+    }
+
+    void storeDataIntoArrays(){
+        Cursor cursor = db.readProfi();
+        if(cursor.getCount() == 0){
+            Toast.makeText(ProfesoriFragment.super.getContext(), "No data.", Toast.LENGTH_SHORT).show();
+        } else {
+          while(cursor.moveToNext()){
+              numeProf.add(cursor.getString(0));
+              mailProf.add(cursor.getString(1));
+              telefonProf.add(cursor.getString(2));
+          }
+        }
     }
 }
