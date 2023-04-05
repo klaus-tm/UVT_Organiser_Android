@@ -18,12 +18,22 @@
             android:id="@+id/action_menuProfesori_to_addProfi"
             app:destination="@id/addProfi"
             />
+        <action
+            android:id="@+id/action_menuProfesori_self"
+            app:destination="@id/menuProfesori" />
     </fragment>
     <fragment
         android:id="@+id/menuDiscipline"
         android:name="com.example.uvtorganiser.DisciplineFragment"
         android:label="Discipline"
-        tools:layout="@layout/fragment_discipline" />
+        tools:layout="@layout/fragment_discipline" >
+        <action
+            android:id="@+id/action_menuDiscipline_to_addDiscipline"
+            app:destination="@id/addDiscipline" />
+        <action
+            android:id="@+id/action_menuDiscipline_self"
+            app:destination="@id/menuDiscipline" />
+    </fragment>
     <fragment
         android:id="@+id/menuTeme"
         android:name="com.example.uvtorganiser.TemeFragment"
@@ -41,11 +51,20 @@
         tools:layout="@layout/fragment_orar" />
     <fragment
         android:id="@+id/addProfi"
-        android:name="com.example.uvtorganiser.AddProfi"
+        android:name="com.example.uvtorganiser.AddProfesori"
         android:label="fragment_add_profi"
-        tools:layout="@layout/fragment_add_profi" >
+        tools:layout="@layout/fragment_add_profesori" >
         <action
             android:id="@+id/action_addProfi_to_menuProfesori"
             app:destination="@id/menuProfesori" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDiscipline"
+        android:name="com.example.uvtorganiser.AddDiscipline"
+        android:label="fragment_add_discipline"
+        tools:layout="@layout/fragment_add_discipline" >
+        <action
+            android:id="@+id/action_addDiscipline_to_menuDiscipline"
+            app:destination="@id/menuDiscipline" />
     </fragment>
 </navigation>

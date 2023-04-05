@@ -22,13 +22,13 @@ public class ProfesoriFragment extends Fragment {
     FloatingActionButton add_profi;
     DatabaseHelper db;
     ArrayList<String>numeProf, mailProf, telefonProf;
-    CustomAdapterProf customAdapterProf;
+    CustomAdapterProfesori customAdapterProfesori;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profesori, container, false);
-        recyclerView = view.findViewById(R.id.reciclerView);
+
+        recyclerView = view.findViewById(R.id.reciclerViewProfesori);
         add_profi = view.findViewById(R.id.addProfesor);
         add_profi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,21 +36,25 @@ public class ProfesoriFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_menuProfesori_to_addProfi);
             }
         });
+
         db = new DatabaseHelper(ProfesoriFragment.super.getContext());
         numeProf = new ArrayList<>();
         mailProf = new ArrayList<>();
         telefonProf = new ArrayList<>();
+
         storeDataIntoArrays();
-        customAdapterProf = new CustomAdapterProf(ProfesoriFragment.super.getContext(), numeProf, mailProf, telefonProf);
-        recyclerView.setAdapter(customAdapterProf);
+
+        customAdapterProfesori = new CustomAdapterProfesori(ProfesoriFragment.super.getContext(), numeProf, mailProf, telefonProf);
+        recyclerView.setAdapter(customAdapterProfesori);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProfesoriFragment.super.getContext()));
+
         return view;
     }
 
     void storeDataIntoArrays(){
         Cursor cursor = db.readProfi();
         if(cursor.getCount() == 0){
-            Toast.makeText(ProfesoriFragment.super.getContext(), "No data.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfesoriFragment.super.getContext(), "Nu exista profesori :(", Toast.LENGTH_SHORT).show();
         } else {
           while(cursor.moveToNext()){
               numeProf.add(cursor.getString(0));

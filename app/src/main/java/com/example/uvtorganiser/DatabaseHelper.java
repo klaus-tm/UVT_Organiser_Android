@@ -46,25 +46,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //operatii profesori
     public void addProf(String nume, String mail, String telefon){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("Nume", nume);
-        contentValues.put("Mail", mail);
-        contentValues.put("Telefon", telefon);
-        long result = db.insert("profesor", null, contentValues);
-        if(result == -1){
-            Toast.makeText(context, "Nu s-a putut insera Profesorul!", Toast.LENGTH_SHORT).show();
-        } else Toast.makeText(context, "Profesor adaugat cu success!", Toast.LENGTH_SHORT).show();
+        if(nume.isEmpty() || mail.isEmpty())
+            Toast.makeText(context, "Completeaza datele Profesorului!", Toast.LENGTH_SHORT).show();
+        else{
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("Nume", nume);
+            contentValues.put("Mail", mail);
+            contentValues.put("Telefon", telefon);
+            long result = db.insert("profesor", null, contentValues);
+            if(result == -1)
+                Toast.makeText(context, "Nu s-a putut insera Profesorul!", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(context, "Profesor adaugat cu success!", Toast.LENGTH_SHORT).show();
+        }
+
     }
     public Cursor readProfi(){
         String querry = "SELECT * FROM profesor";
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
-        if(db != null){
+        if(db != null)
             cursor = db.rawQuery(querry, null);
-        }
         return cursor;
+    }
+
+    public void deleteProf(String numeProf){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("profesor", "Nume=?", new String[]{numeProf});
+        if(result == -1)
+            Toast.makeText(context, "Profesorul nu a putut fi sters!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, "Profesor sters cu success!", Toast.LENGTH_SHORT).show();
+    }
+
+    //operatii discipline
+    public void addDisciplina(String nume, String curs, String seminar){
+        if(nume.isEmpty() || seminar.isEmpty())
+            Toast.makeText(context, "Completeaza datele Disciplinei!", Toast.LENGTH_SHORT).show();
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("Nume", nume);
+            contentValues.put("SalaCurs", curs);
+            contentValues.put("SalaSeminar", seminar);
+            long result = db.insert("disciplina", null, contentValues);
+            if(result == -1)
+                Toast.makeText(context, "Nu s-a putut insera Disciplina!", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(context, "Disciplina adaugata cu success!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public Cursor readDiscipline(){
+        String querry = "SELECT * FROM disciplina";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null)
+            cursor = db.rawQuery(querry, null);
+        return cursor;
+    }
+
+    public void deleteDisciplina(String numeDisciplina){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("disciplina", "Nume=?", new String[]{numeDisciplina});
+        if(result == -1)
+            Toast.makeText(context, "Disciplina nu a putut fi stearsa!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, "Disciplina stearsa cu success!", Toast.LENGTH_SHORT).show();
     }
 }
