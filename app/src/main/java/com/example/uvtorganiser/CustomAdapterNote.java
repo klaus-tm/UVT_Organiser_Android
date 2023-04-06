@@ -15,48 +15,50 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CustomAdapterDiscipline extends RecyclerView.Adapter<CustomAdapterDiscipline.MyViewHolder> {
+public class CustomAdapterNote extends RecyclerView.Adapter<CustomAdapterNote.MyViewHolder> {
     private Context context;
-    private ArrayList numeDisciplina, salaCurs, salaSeminar;
+    private ArrayList numeDisciplina, detaliiNota, Nota, peste5;
 
-    public CustomAdapterDiscipline(Context context, ArrayList numeDisciplina, ArrayList salaCurs, ArrayList salaSeminar) {
+    public CustomAdapterNote(Context context, ArrayList numeDisciplina, ArrayList detaliiNota, ArrayList nota, ArrayList peste5) {
         this.context = context;
         this.numeDisciplina = numeDisciplina;
-        this.salaCurs = salaCurs;
-        this.salaSeminar = salaSeminar;
+        this.detaliiNota = detaliiNota;
+        this.Nota = nota;
+        this.peste5 = peste5;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_discipline, parent, false);
+        View view = inflater.inflate(R.layout.row_note, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.numeDisciplinaText.setText(String.valueOf(numeDisciplina.get(position)));
-        holder.salaCursText.setText(String.valueOf(salaCurs.get(position)));
-        holder.salaSeminarText.setText(String.valueOf(salaSeminar.get(position)));
-        holder.randDisciplina.setOnClickListener(new View.OnClickListener() {
+        holder.detaliiNotaText.setText(String.valueOf(detaliiNota.get(position)));
+        holder.NotaText.setText(String.valueOf(Nota.get(position)));
+        holder.peste5Text.setText(String.valueOf(peste5.get(position)));
+        holder.randNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmDialog(numeDisciplina.get(holder.getAdapterPosition()).toString(), view);
+                confirmDialog(detaliiNota.get(holder.getAdapterPosition()).toString(), view);
             }
         });
     }
 
-    void confirmDialog(String numeDisciplina, View view) {
+    void confirmDialog(String detaliiNota, View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Stergere disciplina");
-        builder.setMessage("Esti sigur ca vrei sa stergi disciplina: " + numeDisciplina + " ?");
+        builder.setTitle("Stergere nota");
+        builder.setMessage("Esti sigur ca vrei sa stergi nota: " + detaliiNota + " ?");
         builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper db = new DatabaseHelper(context);
-                db.deleteDisciplina(numeDisciplina);
-                Navigation.findNavController(view).navigate(R.id.action_menuDiscipline_self);
+                db.deleteNota(detaliiNota);
+                Navigation.findNavController(view).navigate(R.id.action_menuNote_self);
             }
         });
         builder.setNegativeButton("Nu", new DialogInterface.OnClickListener() {
@@ -73,16 +75,16 @@ public class CustomAdapterDiscipline extends RecyclerView.Adapter<CustomAdapterD
         return numeDisciplina.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView numeDisciplinaText, salaCursText, salaSeminarText;
-        LinearLayout randDisciplina;
-
+    public class MyViewHolder extends RecyclerView.ViewHolder{
+        TextView numeDisciplinaText, detaliiNotaText, NotaText, peste5Text;
+        LinearLayout randNota;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             numeDisciplinaText = itemView.findViewById(R.id.numeDisciplinaText);
-            salaCursText = itemView.findViewById(R.id.salaCursText);
-            salaSeminarText = itemView.findViewById(R.id.salaSeminarText);
-            randDisciplina = itemView.findViewById(R.id.randDisciplina);
+            detaliiNotaText = itemView.findViewById(R.id.detaliiNotaText);
+            NotaText = itemView.findViewById(R.id.NotaText);
+            peste5Text = itemView.findViewById(R.id.peste5Text);
+            randNota = itemView.findViewById(R.id.randNota);
         }
     }
 }

@@ -43,7 +43,14 @@
         android:id="@+id/menuNote"
         android:name="com.example.uvtorganiser.NoteFragment"
         android:label="Note"
-        tools:layout="@layout/fragment_note" />
+        tools:layout="@layout/fragment_note" >
+        <action
+            android:id="@+id/action_menuNote_to_addNote"
+            app:destination="@id/addNote" />
+        <action
+            android:id="@+id/action_menuNote_self"
+            app:destination="@id/menuNote" />
+    </fragment>
     <fragment
         android:id="@+id/menuOrar"
         android:name="com.example.uvtorganiser.OrarFragment"
@@ -66,5 +73,14 @@
         <action
             android:id="@+id/action_addDiscipline_to_menuDiscipline"
             app:destination="@id/menuDiscipline" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNote"
+        android:name="com.example.uvtorganiser.AddNote"
+        android:label="fragment_add_note"
+        tools:layout="@layout/fragment_add_note" >
+        <action
+            android:id="@+id/action_addNote_to_menuNote"
+            app:destination="@id/menuNote" />
     </fragment>
 </navigation>

@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -115,5 +117,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Disciplina nu a putut fi stearsa!", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(context, "Disciplina stearsa cu success!", Toast.LENGTH_SHORT).show();
+    }
+
+    //operatii note
+    public void addNota(String disciplina, String detalii, Float nota){
+        if(disciplina.isEmpty() || nota.isNaN())
+            Toast.makeText(context, "Completeaza datele Notei!", Toast.LENGTH_SHORT).show();
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("Disciplina", disciplina);
+            contentValues.put("DetaliiNota", detalii);
+            contentValues.put("Nota", nota);
+            if(nota >= 5.0)
+                contentValues.put("Peste5", 1);
+            else contentValues.put("Peste5", 0);
+            long result = db.insert("nota", null, contentValues);
+            if(result == -1)
+                Toast.makeText(context, "Nu s-a putut insera Nota!", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(context, "Nota adaugata cu success!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Cursor readNote(){
+        String querry = "SELECT * FROM nota";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null)
+            cursor = db.rawQuery(querry, null);
+        return cursor;
+    }
+
+    public void deleteNota(String detaliiNota){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("nota", "DetaliiNota=?", new String[]{detaliiNota});
+        if(result == -1)
+            Toast.makeText(context, "Nota nu a putut fi stearsa!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, "Nota stearsa cu success!", Toast.LENGTH_SHORT).show();
     }
 }
