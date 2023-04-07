@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -48,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //operatii profesori
+    //Operatii Profesori
     public void addProf(String nume, String mail, String telefon){
         if(nume.isEmpty() || mail.isEmpty())
             Toast.makeText(context, "Completeaza datele Profesorului!", Toast.LENGTH_SHORT).show();
@@ -84,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Profesor sters cu success!", Toast.LENGTH_SHORT).show();
     }
 
-    //operatii discipline
+    //Operatii Discipline
     public void addDisciplina(String nume, String curs, String seminar){
         if(nume.isEmpty() || seminar.isEmpty())
             Toast.makeText(context, "Completeaza datele Disciplinei!", Toast.LENGTH_SHORT).show();
@@ -119,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Disciplina stearsa cu success!", Toast.LENGTH_SHORT).show();
     }
 
-    //operatii note
+    //Operatii Note
     public void addNota(String disciplina, String detalii, Float nota){
         if(disciplina.isEmpty() || nota.isNaN())
             Toast.makeText(context, "Completeaza datele Notei!", Toast.LENGTH_SHORT).show();
@@ -156,5 +157,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Nota nu a putut fi stearsa!", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(context, "Nota stearsa cu success!", Toast.LENGTH_SHORT).show();
+    }
+
+    //Operatii Teme
+    public void addTema(String disciplina, String detalii, String termen){
+        if(disciplina.isEmpty())
+            Toast.makeText(context, "Completeaza datele Temei!", Toast.LENGTH_SHORT).show();
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("Disciplina", disciplina);
+            contentValues.put("DetaliiTema", detalii);
+            contentValues.put("Termen", termen);
+            contentValues.put("Terminata", 0);
+            long result = db.insert("tema", null, contentValues);
+            if(result == -1)
+                Toast.makeText(context, "Nu s-a putut insera Tema!", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(context, "Tema adaugata cu success!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Cursor readTeme(){
+        String querry = "SELECT * FROM tema";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null)
+            cursor = db.rawQuery(querry, null);
+        return cursor;
+    }
+
+    void makeTerminata(String detalii){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("Terminata", 1);
+        long result = db.update("tema", contentValues, "DetaliiTema=?", new String[]{detalii});
+        if (result == -1)
+            Toast.makeText(context, "Nu s-a putut marca tema ca terminata!", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(context, "Tema s-a marcat ca terminata!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void deleteTema(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("tema", "Terminata=?", new String[]{"1"});
+        if (result == -1)
+            Toast.makeText(context, "Nu s-au putut sterge Temele!", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(context, "S-au sters toate temele terminate!", Toast.LENGTH_SHORT).show();
     }
 }

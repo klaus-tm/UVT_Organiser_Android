@@ -38,7 +38,14 @@
         android:id="@+id/menuTeme"
         android:name="com.example.uvtorganiser.TemeFragment"
         android:label="Teme"
-        tools:layout="@layout/fragment_teme" />
+        tools:layout="@layout/fragment_teme" >
+        <action
+            android:id="@+id/action_menuTeme_to_addTeme"
+            app:destination="@id/addTeme" />
+        <action
+            android:id="@+id/action_menuTeme_self"
+            app:destination="@id/menuTeme" />
+    </fragment>
     <fragment
         android:id="@+id/menuNote"
         android:name="com.example.uvtorganiser.NoteFragment"
@@ -82,5 +89,14 @@
         <action
             android:id="@+id/action_addNote_to_menuNote"
             app:destination="@id/menuNote" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTeme"
+        android:name="com.example.uvtorganiser.AddTeme"
+        android:label="fragment_add_teme"
+        tools:layout="@layout/fragment_add_teme" >
+        <action
+            android:id="@+id/action_addTeme_to_menuTeme"
+            app:destination="@id/menuTeme" />
     </fragment>
 </navigation>

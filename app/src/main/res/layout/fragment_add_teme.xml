@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddNote"
+    tools:context=".AddTeme"
     android:padding="30dp">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -32,40 +32,39 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <EditText
-        android:id="@+id/DetaliiNota"
+        android:id="@+id/DetaliiTema"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Detalii nota"
+        android:hint="Detalii tema"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/choiceboxDiscipline" />
 
     <EditText
-        android:id="@+id/Nota"
+        android:id="@+id/termenTema"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Nota atribuita"
-        android:inputType="number"
+        android:hint="Selecteaza data termenului"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DetaliiNota" />
+        app:layout_constraintTop_toBottomOf="@+id/DetaliiTema" />
 
     <Button
-        android:id="@+id/addNota"
+        android:id="@+id/addTema"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="100dp"
-        android:text="Adauga Nota"
+        android:text="Adauga Tema"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Nota" />
+        app:layout_constraintTop_toBottomOf="@+id/termenTema" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

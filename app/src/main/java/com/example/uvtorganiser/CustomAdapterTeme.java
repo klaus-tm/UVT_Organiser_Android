@@ -3,62 +3,66 @@ package com.example.uvtorganiser;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class CustomAdapterNote extends RecyclerView.Adapter<CustomAdapterNote.MyViewHolder> {
+public class CustomAdapterTeme extends RecyclerView.Adapter<CustomAdapterTeme.MyViewHolder> {
     private Context context;
-    private ArrayList numeDisciplina, detaliiNota, Nota, peste5;
+    private ArrayList numeDisciplina, detaliiTema, termen, terminata;
 
-    public CustomAdapterNote(Context context, ArrayList numeDisciplina, ArrayList detaliiNota, ArrayList nota, ArrayList peste5) {
+    public CustomAdapterTeme(Context context, ArrayList numeDisciplina, ArrayList detaliiTema, ArrayList termen, ArrayList terminata) {
         this.context = context;
         this.numeDisciplina = numeDisciplina;
-        this.detaliiNota = detaliiNota;
-        this.Nota = nota;
-        this.peste5 = peste5;
+        this.detaliiTema = detaliiTema;
+        this.termen = termen;
+        this.terminata = terminata;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_note, parent, false);
+        View view = inflater.inflate(R.layout.row_teme, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.numeDisciplinaText.setText(String.valueOf(numeDisciplina.get(position)));
-        holder.detaliiNotaText.setText(String.valueOf(detaliiNota.get(position)));
-        holder.NotaText.setText(String.valueOf(Nota.get(position)));
-        holder.peste5Text.setText(String.valueOf(peste5.get(position)));
-        holder.randNota.setOnClickListener(new View.OnClickListener() {
+        holder.detaliiTemaText.setText(String.valueOf(detaliiTema.get(position)));
+        holder.termenText.setText(String.valueOf(termen.get(position)));
+        holder.terminataText.setText(String.valueOf(terminata.get(position)));
+        holder.randTema.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmDialog(detaliiNota.get(holder.getAdapterPosition()).toString(), view);
+                confirmDialog(detaliiTema.get(holder.getAdapterPosition()).toString(), view);
             }
         });
     }
 
-    void confirmDialog(String detaliiNota, View view) {
+    void confirmDialog(String detaliiTema, View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Stergere nota");
-        builder.setMessage("Esti sigur ca vrei sa stergi nota: " + detaliiNota + " ?");
+        builder.setTitle("Marcare tema ca terminata");
+        builder.setMessage("Esti sigur ca vrei sa marchezi tema: " + detaliiTema + " ca terminata ?");
         builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper db = new DatabaseHelper(context);
-                db.deleteNota(detaliiNota);
-                Navigation.findNavController(view).navigate(R.id.action_menuNote_self);
+                db.makeTerminata(detaliiTema);
+                Navigation.findNavController(view).navigate(R.id.action_menuTeme_self);
             }
         });
         builder.setNegativeButton("Nu", new DialogInterface.OnClickListener() {
@@ -76,15 +80,15 @@ public class CustomAdapterNote extends RecyclerView.Adapter<CustomAdapterNote.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView numeDisciplinaText, detaliiNotaText, NotaText, peste5Text;
-        LinearLayout randNota;
+        TextView numeDisciplinaText, detaliiTemaText, termenText, terminataText;
+        LinearLayout randTema;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            numeDisciplinaText = itemView.findViewById(R.id.numeDisciplinaNotaText);
-            detaliiNotaText = itemView.findViewById(R.id.detaliiNotaText);
-            NotaText = itemView.findViewById(R.id.NotaText);
-            peste5Text = itemView.findViewById(R.id.peste5Text);
-            randNota = itemView.findViewById(R.id.randNota);
+            numeDisciplinaText = itemView.findViewById(R.id.numeDisciplinaTemaText);
+            detaliiTemaText = itemView.findViewById(R.id.detaliiTemaText);
+            termenText = itemView.findViewById(R.id.termenTemaText);
+            terminataText = itemView.findViewById(R.id.terminataText);
+            randTema = itemView.findViewById(R.id.randTema);
         }
     }
 }

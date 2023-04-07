@@ -1,64 +1,93 @@
 package com.example.uvtorganiser;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TemeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class TemeFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public TemeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TemeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TemeFragment newInstance(String param1, String param2) {
-        TemeFragment fragment = new TemeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    RecyclerView recyclerView;
+    FloatingActionButton add_Teme;
+    DatabaseHelper db;
+    ArrayList<String>numeDisciplina, detaliiTema, terminata, termen;
+    CustomAdapterTeme customAdapterTeme;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_teme, container, false);
+        View view = inflater.inflate(R.layout.fragment_teme, container, false);
+
+        recyclerView = view.findViewById(R.id.reciclerViewTeme);
+        add_Teme = view.findViewById(R.id.addTema);
+
+        add_Teme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_menuTeme_to_addTeme);
+            }
+        });
+
+        db = new DatabaseHelper(TemeFragment.super.getContext());
+        numeDisciplina = new ArrayList<>();
+        detaliiTema = new ArrayList<>();
+        termen = new ArrayList<>();
+        terminata = new ArrayList<>();
+
+        storeDataIntoArrays();
+        customAdapterTeme = new CustomAdapterTeme(TemeFragment.super.getContext(), numeDisciplina, detaliiTema, termen, terminata);
+        recyclerView.setAdapter(customAdapterTeme);
+        recyclerView.setLayoutManager(new LinearLayoutManager(TemeFragment.super.getContext()));
+        return view;
+    }
+
+    void storeDataIntoArrays(){
+        Cursor cursor = db.readTeme();
+        if(cursor.getCount() == 0){
+            Toast.makeText(TemeFragment.super.getContext(), "Nu ai teme de facut. YAY :)", Toast.LENGTH_SHORT).show();
+        } else {
+            while(cursor.moveToNext()){
+                numeDisciplina.add(cursor.getString(0));
+                detaliiTema.add(cursor.getString(1));
+                termen.add(cursor.getString(2));
+                if (cursor.getInt(3) == 0)
+                    terminata.add("Nu");
+                else terminata.add("Da");
+            }
+        }
+
+        Handler handlerMain = new Handler();
+        handlerMain.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (terminata.contains("Da")){
+                    Toast.makeText(TemeFragment.super.getContext(), "Se pare ca ai teme terminate. Asteapta cateva momente ca sa le sterg!", Toast.LENGTH_SHORT).show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.deleteTema();
+                            Navigation.findNavController(TemeFragment.super.getView()).navigate(R.id.action_menuTeme_self);
+                        }
+                    }, 10000);
+                }
+            }
+        }, 5000);
+
     }
 }
