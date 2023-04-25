@@ -48,12 +48,12 @@ public class CustomAdapterTeme extends RecyclerView.Adapter<CustomAdapterTeme.My
         holder.randTema.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmDialog(detaliiTema.get(holder.getAdapterPosition()).toString(), view);
+                confirmDialog(detaliiTema.get(holder.getAdapterPosition()).toString(), numeDisciplina.get(holder.getAdapterPosition()).toString(), view);
             }
         });
     }
 
-    void confirmDialog(String detaliiTema, View view) {
+    void confirmDialog(String detaliiTema, String numeDisciplina, View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Marcare tema ca terminata");
         builder.setMessage("Esti sigur ca vrei sa marchezi tema: " + detaliiTema + " ca terminata ?");
@@ -61,7 +61,7 @@ public class CustomAdapterTeme extends RecyclerView.Adapter<CustomAdapterTeme.My
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper db = new DatabaseHelper(context);
-                db.makeTerminata(detaliiTema);
+                db.makeTerminata(detaliiTema, numeDisciplina);
                 Navigation.findNavController(view).navigate(R.id.action_menuTeme_self);
             }
         });

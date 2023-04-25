@@ -44,12 +44,12 @@ public class CustomAdapterNote extends RecyclerView.Adapter<CustomAdapterNote.My
         holder.randNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmDialog(detaliiNota.get(holder.getAdapterPosition()).toString(), view);
+                confirmDialog(detaliiNota.get(holder.getAdapterPosition()).toString(), numeDisciplina.get(holder.getAdapterPosition()).toString(), view);
             }
         });
     }
 
-    void confirmDialog(String detaliiNota, View view) {
+    void confirmDialog(String detaliiNota, String numeDisciplina, View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Stergere nota");
         builder.setMessage("Esti sigur ca vrei sa stergi nota: " + detaliiNota + " ?");
@@ -57,7 +57,7 @@ public class CustomAdapterNote extends RecyclerView.Adapter<CustomAdapterNote.My
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper db = new DatabaseHelper(context);
-                db.deleteNota(detaliiNota);
+                db.deleteNota(detaliiNota, numeDisciplina);
                 Navigation.findNavController(view).navigate(R.id.action_menuNote_self);
             }
         });

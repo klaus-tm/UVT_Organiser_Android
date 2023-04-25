@@ -150,9 +150,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void deleteNota(String detaliiNota){
+    public void deleteNota(String detaliiNota, String disciplina){
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete("nota", "DetaliiNota=?", new String[]{detaliiNota});
+        long result = db.delete("nota", "DetaliiNota=? and Disciplina=?", new String[]{detaliiNota, disciplina});
         if(result == -1)
             Toast.makeText(context, "Nota nu a putut fi stearsa!", Toast.LENGTH_SHORT).show();
         else
@@ -187,11 +187,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    void makeTerminata(String detalii){
+    void makeTerminata(String detalii, String disciplina){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Terminata", 1);
-        long result = db.update("tema", contentValues, "DetaliiTema=?", new String[]{detalii});
+        long result = db.update("tema", contentValues, "DetaliiTema=? and Disciplina=?" , new String[]{detalii, disciplina});
         if (result == -1)
             Toast.makeText(context, "Nu s-a putut marca tema ca terminata!", Toast.LENGTH_SHORT).show();
         else Toast.makeText(context, "Tema s-a marcat ca terminata!", Toast.LENGTH_SHORT).show();

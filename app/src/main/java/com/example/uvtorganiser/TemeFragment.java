@@ -84,8 +84,9 @@ public class TemeFragment extends Fragment {
                             db.deleteTema();
                             Navigation.findNavController(TemeFragment.super.getView()).navigate(R.id.action_menuTeme_self);
                         }
-                    }, 10000);
+                    }, 2000);
                 }
+
             }
         }, 5000);
 
