@@ -59,11 +59,6 @@
             app:destination="@id/menuNote" />
     </fragment>
     <fragment
-        android:id="@+id/menuOrar"
-        android:name="com.example.uvtorganiser.OrarFragment"
-        android:label="Orar"
-        tools:layout="@layout/fragment_orar" />
-    <fragment
         android:id="@+id/addProfi"
         android:name="com.example.uvtorganiser.AddProfesori"
         android:label="fragment_add_profi"
@@ -98,5 +93,76 @@
         <action
             android:id="@+id/action_addTeme_to_menuTeme"
             app:destination="@id/menuTeme" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuOrar"
+        android:name="com.example.uvtorganiser.OrarFragment"
+        android:label="fragment_orar"
+        tools:layout="@layout/fragment_orar" >
+        <action
+            android:id="@+id/action_menuOrar_to_orarLuni"
+            app:destination="@id/orarLuni" />
+        <action
+            android:id="@+id/action_menuOrar_to_orarMarti"
+            app:destination="@id/orarMarti" />
+        <action
+            android:id="@+id/action_menuOrar_to_orarMiercuri"
+            app:destination="@id/orarMiercuri" />
+        <action
+            android:id="@+id/action_menuOrar_to_orarJoi"
+            app:destination="@id/orarJoi" />
+        <action
+            android:id="@+id/action_menuOrar_to_orarVineri"
+            app:destination="@id/orarVineri" />
+    </fragment>
+    <fragment
+        android:id="@+id/orarLuni"
+        android:name="com.example.uvtorganiser.OrarLuni"
+        android:label="fragment_orar_luni"
+        tools:layout="@layout/fragment_orar_luni" >
+        <action
+            android:id="@+id/action_orarLuni_self"
+            app:destination="@id/orarLuni" />
+    </fragment>
+    <fragment
+        android:id="@+id/addOra"
+        android:name="com.example.uvtorganiser.AddOra"
+        android:label="fragment_add_ora"
+        tools:layout="@layout/fragment_add_ora" />
+    <fragment
+        android:id="@+id/orarMarti"
+        android:name="com.example.uvtorganiser.OrarMarti"
+        android:label="fragment_orar_marti"
+        tools:layout="@layout/fragment_orar_marti" >
+        <action
+            android:id="@+id/action_orarMarti_self"
+            app:destination="@id/orarMarti" />
+    </fragment>
+    <fragment
+        android:id="@+id/orarMiercuri"
+        android:name="com.example.uvtorganiser.OrarMiercuri"
+        android:label="fragment_orar_miercuri"
+        tools:layout="@layout/fragment_orar_miercuri" >
+        <action
+            android:id="@+id/action_orarMiercuri_self"
+            app:destination="@id/orarMiercuri" />
+    </fragment>
+    <fragment
+        android:id="@+id/orarJoi"
+        android:name="com.example.uvtorganiser.OrarJoi"
+        android:label="fragment_orar_joi"
+        tools:layout="@layout/fragment_orar_joi" >
+        <action
+            android:id="@+id/action_orarJoi_self"
+            app:destination="@id/orarJoi" />
+    </fragment>
+    <fragment
+        android:id="@+id/orarVineri"
+        android:name="com.example.uvtorganiser.OrarVineri"
+        android:label="fragment_orar_vineri"
+        tools:layout="@layout/fragment_orar_vineri" >
+        <action
+            android:id="@+id/action_orarVineri_self"
+            app:destination="@id/orarVineri" />
     </fragment>
 </navigation>

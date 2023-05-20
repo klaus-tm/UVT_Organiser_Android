@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String disciplina = "CREATE TABLE disciplina (Nume TEXT NOT NULL PRIMARY KEY, SalaCurs TEXT DEFAULT NULL, SalaSeminar TEXT NOT NULL)";
         String tema = "CREATE TABLE tema (Disciplina TEXT NOT NULL, DetaliiTema TEXT NOT NULL, Termen TEXT NOT NULL, Terminata INTEGER NOT NULL, CONSTRAINT Disciplina FOREIGN KEY(Disciplina) REFERENCES disciplina(Nume))";
         String nota = "CREATE TABLE nota (Disciplina TEXT NOT NULL, DetaliiNota TEXT NOT NULL, Nota INTEGER NOT NULL, Peste5 INTEGER NOT NULL, CONSTRAINT Disciplina FOREIGN KEY(Disciplina) REFERENCES disciplina(Nume))";
-        String orar = "CREATE TABLE orar (Profesor TEXT NOT NULL, Disciplina TEXT NOT NULL, Sala TEXT NOT NULL, Zi TEXT NOT NULL, Ora INT NOT NULL, CONSTRAINT Disciplina FOREIGN KEY(Disciplina) REFERENCES disciplina(Nume), CONSTRAINT Profesor FOREIGN KEY(Profesor) REFERENCES profesor(Nume))";
+        String orar = "CREATE TABLE orar (Profesor TEXT NOT NULL, Disciplina TEXT NOT NULL, Sala TEXT NOT NULL, Zi TEXT NOT NULL, Ora TEXT NOT NULL, CONSTRAINT Disciplina FOREIGN KEY(Disciplina) REFERENCES disciplina(Nume), CONSTRAINT Profesor FOREIGN KEY(Profesor) REFERENCES profesor(Nume))";
         db.execSQL(profesor);
         db.execSQL(disciplina);
         db.execSQL(tema);
@@ -149,6 +149,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(querry, null);
         return cursor;
     }
+    public Cursor readNoteSpecial(String disciplina) {
+        String querry = "SELECT * FROM nota WHERE Disciplina = '" + disciplina + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null)
+            cursor = db.rawQuery(querry, null);
+        return cursor;
+    }
 
     public void deleteNota(String detaliiNota, String disciplina){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -203,5 +212,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (result == -1)
             Toast.makeText(context, "Nu s-au putut sterge Temele!", Toast.LENGTH_SHORT).show();
         else Toast.makeText(context, "S-au sters toate temele terminate!", Toast.LENGTH_SHORT).show();
+    }
+
+    //Operatii Orar
+    public void addOra(String profesor, String disciplina, String sala, String zi, String ora){
+        if (profesor.isEmpty() || disciplina.isEmpty())
+            Toast.makeText(context, "Completeaza datele Orei!", Toast.LENGTH_SHORT).show();
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("Profesor", profesor);
+            contentValues.put("Disciplina", disciplina);
+            contentValues.put("Sala", sala);
+            contentValues.put("Zi", zi);
+            contentValues.put("Ora", ora);
+            long result = db.insert("orar", null, contentValues);
+            if (result == -1)
+                Toast.makeText(context, "Nu s-a putut insera ora!", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(context, "Ora a fost salvata cu succes!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Cursor readOre(String zi){
+        String querry = "SELECT * FROM orar WHERE Zi = '" + zi + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if (db != null)
+            cursor = db.rawQuery(querry, null);
+        return cursor;
+    }
+
+    public void deleteOra(String ora, String zi){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("orar", "Ora=? and Zi=?", new String[]{ora, zi});
+        if(result == -1)
+            Toast.makeText(context, "Ora nu a putut fi stearsa!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, "Ora stearsa cu success!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void deleteOrar() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String querry = "DELETE from orar";
+        db.execSQL(querry);
+        Toast.makeText(context, "Orar sters cu success!", Toast.LENGTH_SHORT).show();
     }
 }
